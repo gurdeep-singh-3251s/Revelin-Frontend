@@ -23,7 +23,7 @@ function Header() {
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark" style={{background:'black'}}>
         <div className="container-fluid">
-          <NavLink to="/" className="navbar-brand"><ShoppingCartIcon />  DineDrop</NavLink>
+          <NavLink to="/" className="navbar-brand"><ShoppingCartIcon />  Revelin</NavLink>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" />
           </button>
@@ -45,7 +45,9 @@ function Header() {
                   }
                 </ul>
               </li>
-
+              <li className="nav-item">
+                <NavLink to="/filter" exact className="nav-link" activeClassName="active">Filters</NavLink>
+              </li>
               {
                 !auth.user ? (<>
                   <li className="nav-item">

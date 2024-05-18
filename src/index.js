@@ -10,21 +10,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/auth';
 import { SearchProvider } from './context/Search';
 import { CartProvider } from './context/cart';
+import { TransactionProvider } from './context/transaction';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthProvider>
     <SearchProvider>
       <CartProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <TransactionProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </TransactionProvider>
       </CartProvider>
     </SearchProvider>
   </AuthProvider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

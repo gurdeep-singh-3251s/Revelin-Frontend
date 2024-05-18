@@ -12,7 +12,7 @@ function Policy() {
           <div className="policy-info">
             <h3>Privacy Policy</h3>
             <p className="description">
-              At DineDrop, we value your privacy and are committed to safeguarding your personal information. This Privacy Policy outlines how we collect, use, and protect the data you provide when using our ecommerce platform.
+              At Revelin, we value your privacy and are committed to safeguarding your personal information. This Privacy Policy outlines how we collect, use, and protect the data you provide when using our ecommerce platform.
             </p>
 
             <h4>Data Usage:</h4>
@@ -34,7 +34,7 @@ function Policy() {
 
               Please contact us if you have any questions or concerns regarding your privacy. Your trust is essential to us, and we are committed to maintaining the confidentiality and security of your data.
             </p>
-            <h5>DineDrop - Your Trusted Shopping Destination.</h5>
+            <h5>Revelin - Your Trusted Shopping Destination.</h5>
           </div>
         </div>
       </Layout>

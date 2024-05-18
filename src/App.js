@@ -19,6 +19,7 @@ import Orders from "./pages/user/Orders";
 import Products from "./pages/Admin/Products";
 import UpdateProduct from "./pages/Admin/UpdateProduct";
 import Search from "./pages/Search";
+import FilterPage from "./pages/FilterPage";
 import ProductDetails from "./pages/ProductDetails";
 import Categories from "./pages/Categories";
 import CartPage from "./pages/CartPage";
@@ -33,6 +34,7 @@ function App() {
         <Route path='/Product/:slug' element={<ProductDetails />} />
         <Route path='/category/:slug' element={<Categories />} />
         <Route path='/Search' element={<Search />} />
+        <Route path='/filter' element={<FilterPage />} />
         <Route path='/Cart' element={<CartPage />} />
         <Route path='/register' element={<Register />} />
         <Route path='/dashboard' element={<PrivateRoute />}>

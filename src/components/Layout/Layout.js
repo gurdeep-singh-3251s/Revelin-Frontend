@@ -23,9 +23,9 @@ function Layout(props,{children,title,description,keywords,author}) {
   )
 }
 Layout.defaultProps = {
-  title:'Unideals - Shop now',
-  description:'MERN Stack Project',
-  keywords:'MERN, react,node,mongodb,express',
+  title:'Revelin - Shop now',
+  description:'Web 3.0 Project',
+  keywords:'MERN, react,node,mongodb,express, blockchain, ethereum',
   author:'Gurdeep Singh'
 }
 

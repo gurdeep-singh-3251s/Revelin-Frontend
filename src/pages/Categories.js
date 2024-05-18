@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout/Layout';
 import axios from 'axios';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { Spin, Card, Row, Col, Button, Typography } from 'antd';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { motion } from "framer-motion";
+import { useCart } from '../context/cart';
+import { toast } from 'react-hot-toast';
+
+const { Meta } = Card;
+const { Title } = Typography;
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1 } }
+};
 
 const Categories = () => {
+  const [cart, setCart] = useCart();
   const [products, setProducts] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [category, setCategory] = useState('');
+  const [loading, setLoading] = useState(true);
   const params = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (params?.slug) {
@@ -16,95 +29,82 @@ const Categories = () => {
     }
   }, [params?.slug]);
 
-  const getCategoryQuote = () => {
-    // Mapping of category names to quotes
-    const categoryQuotes = {
-      breakfast: "Rise and shine to a world of breakfast delights!",
-      lunch: "Savor the flavors of a hearty lunch feast!",
-      snacks: "Indulge in delightful snacks that satisfy your cravings!",
-      dinner: "End your day on a delicious note with our dinner selections!",
-    };
-
-
-    return categoryQuotes[params.slug.toLowerCase()] || "Explore our culinary delights!";
-  };
-  const getCategoryImage = () => {
-    const categoryImage = {
-      breakfast: '/Images/Breakfast_cat.jpg',
-      lunch: '/Images/Lunch_cat.jpg',
-      snacks: '/Images/Snacks_cat.jpg',
-      dinner: '/Images/Dinner_cat.jpg'
-    }
-    return categoryImage[params.slug.toLowerCase()] || '/Images/Main.jpeg';
-  }
   const getProductByCat = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/product-category/${params.slug}`
       );
       const data = response.data;
-      console.log(data);
       setProducts(data?.products);
-      setCategory(data?.category);
-      setLoading(false); // Set loading state to false once data is loaded
+      setCategory(data?.category.name);
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false); // Set loading state to false in case of an error
+      setLoading(false);
     }
   };
 
   return (
-    <Layout title={'DineDrop - Categories'}>
-      <div className="containers ">
-        <div className="container" style={{ width: '100vw', position: 'relative', textAlign: 'center', color: 'white', marginLeft: '5px',justifyContent:'center', padding: '0', top: '0' }}>
-          <img src={getCategoryImage()} className="d-block " style={{ width: '98vw', height: '90vh' }} alt="..." />
-          <div style={{ fontWeight: '500', fontSize: '2em', position: 'absolute', top: '14vh', left: '55vw' }}>
-            <div style={{ background: 'none', marginTop: '10px', display: 'inline-block', height:'40rem',justifyContent:'center',alignContent:'center', width: '34vw' }}>
-              <h1 className='title' style={{ fontSize: '100px ', color: 'Black' }}><u>{category?.name?.toUpperCase()}</u></h1>
-              <h5 style={{ color: '#545454' }} className='text-center'><strong>{getCategoryQuote()} </strong></h5>
-              <img src="https://cdn-icons-png.flaticon.com/512/2771/2771401.png" style={{height:'10em'}} alt="" />
-            </div>
+    <Layout title={`Revelin - Categories`}>
+      <div className="container" style={{ padding: '20px' }}>
+        <Spin spinning={loading}>
+          <div style={{ textAlign: 'center', margin: '20px 0', padding: '10px', backgroundColor: '#34495e', borderRadius: '10px' }}>
+            <Title level={2} style={{ color: '#ecf0f1', fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>
+              Our Items in <span style={{ color: '#e74c3c', textDecoration: 'underline' }}>{category}</span>
+            </Title>
           </div>
-        </div>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <h6 className="text-center">Our menu </h6>
-            <hr />
-            <div className="row">
-              <div className="col-md-3 offset-1">
-
-              </div>
-              <div className="col-md-9 offset-1">
-                <div className="d-flex flex-row flex-wrap">
-                  {products?.map((p) => (
-                    <Link key={p._id} className="product-link" to={`/product/${p.slug}`}>
-                      <div className="card m-3" style={{ height: '28rem', width: '18rem' }}>
-                        <img
-                          src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
-                          height={'250px'}
-                          className="card-img-top border-top-0"
-                          alt={p.name}
-                        />
-                        <div className="card-body border">
-                          <div className="d-flex flex-row justify-content-between">
-                            <h4 className="card-title">{p.name[0].toUpperCase() + p.name.slice(1)}</h4>
-                            <h5 className="card-title">${p.price}</h5>
+          <Row gutter={[16, 16]} justify="center">
+            {products.map((product) => (
+              <Col xs={24} sm={12} md={8} lg={6} key={product._id}>
+                <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                  <Card
+                    hoverable
+                    style={{
+                      height: '100%',
+                      borderRadius: '10px',
+                      overflow: 'hidden',
+                      backgroundColor: '#2c3e50',
+                      color: '#ecf0f1',
+                      textAlign: 'center',
+                      padding: '10px'
+                    }}
+                    cover={
+                      <img
+                        src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product._id}`}
+                        alt={product.name}
+                        style={{ height: '220px', objectFit: 'cover', borderRadius: '10px 10px 0 0' }}
+                      />
+                    }
+                  >
+                    <Link to={`/product/${product.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Meta
+                        title={
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ fontWeight: 'bold', color: '#ecf0f1' }}>{product.name}</span>
+                            <span style={{ color: '#e74c3c' }}>${product.price}</span>
                           </div>
-                          <p className="card-text">{p.description.substring(0, 60)}</p>
-                          <button className="btn btn-secondary" style={{ width: '100%' }}>
-                            Add to cart
-                          </button>
-                        </div>
-                      </div>
+                        }
+                        description={<span style={{ color: '#bdc3c7' }}>{product.description.substring(0, 45) + '...'}</span>}
+                      />
                     </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
+                    <Button
+                      type="primary"
+                      style={{ marginTop: '10px', backgroundColor: '#e74c3c', borderColor: '#e74c3c' }}
+                      icon={<ShoppingCartOutlined />}
+                      onClick={() => {
+                        setCart([...cart, product]);
+                        localStorage.setItem('cart', JSON.stringify([...cart, product]));
+                        toast.success('Added to Cart');
+                      }}
+                    >
+                      Add to cart
+                    </Button>
+                  </Card>
+                </motion.div>
+              </Col>
+            ))}
+          </Row>
+        </Spin>
       </div>
     </Layout>
   );
